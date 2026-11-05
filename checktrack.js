@@ -11,8 +11,10 @@ const track = JSON.parse(texte)
 const cheminDossier = join(homedir(), "ada-tech", "bloc1", "projets")
 
 // TODO : vérifier que ce dossier existe et afficher le résultat
+const vert = (texte) => `\x1b[32m${texte}\x1b[0m`
+const rouge = (texte) => `\x1b[31m${texte}\x1b[0m`
 if (existsSync(cheminDossier)) {
-    console.log("✅ dossier ~/ada-tech/bloc1/projets")
+    console.log(vert("✅ dossier ~/ada-tech/bloc1/projets"))
  
     // TODO : pour chaque projet de la track,
     //        vérifier que le dossier existe au bon endroit
@@ -34,7 +36,8 @@ if (existsSync(cheminDossier)) {
 
     const afficherStatut = (nom, ok) => {
         const icone = ok ? "✅" : "❌"
-        console.log(`${icone} dossier du projet ${nom}`)
+        const message = ok ? vert(`${icone} dossier du projet ${nom}`) : rouge(`${icone} dossier du projet ${nom}`)
+        console.log(message)
     }
 
     let projetsCorrects = 0
@@ -65,10 +68,11 @@ if (existsSync(cheminDossier)) {
     const afficherPourcentage = (ok, total) => {
         const pourcent = Math.round((ok / total) * 100)
         const icone = ok === total ? "✅" : "❌"
-        console.log(`${icone} ${pourcent}% des projets sont initialisés correctement (${ok}/${total})`)
+        const messagePourcent = `${icone} ${pourcent}% des projets sont initialisés correctement (${ok}/${total})`
+        console.log(ok === total ? vert(messagePourcent) : rouge(messagePourcent))
     }
     afficherPourcentage(projetsCorrects, track.projects.length)
 }
 else {
-    console.log("❌ dossier ~/ada-tech/bloc1/projets")
+    console.log(rouge("❌ dossier ~/ada-tech/bloc1/projets"))
 }
